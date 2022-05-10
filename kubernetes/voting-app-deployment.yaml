@@ -5,7 +5,7 @@ metadata:
   labels:
     app: voting-app
 spec:
-  replicas: 1
+  # replicas: 1
   selector:
     matchLabels:
       app: voting-app
@@ -16,12 +16,14 @@ spec:
     spec:
       containers:
       - name: voting-app
-        image: waabuffet/devops-voting-app
+        image: waabuffet/devops-voting-app:haproxy-pretty
         ports:
           - containerPort: 80
         resources:
-          requests:
-            cpu: 400m
+          # requests:
+          #   cpu: 50m
+          limits:
+            cpu: 50m
         env:
           - name: DB_HOST
             valueFrom:
@@ -48,17 +50,13 @@ spec:
               secretKeyRef:
                 name: db-secret
                 key: DB_PASS
-          - name: WORKDIR
-            valueFrom:
-              configMapKeyRef:
-                name: voting-app-config
-                key: APP_WORKDIR
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: voting-app-service
 spec:
+  sessionAffinity: ClientIP # sticky sessions
   selector: 
     app: voting-app
   type: LoadBalancer

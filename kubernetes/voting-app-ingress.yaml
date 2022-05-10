@@ -2,7 +2,20 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: voting-app-ingress
+  annotations:
+    # kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/session-cookie-name: "voting-app-cookie"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: voting-app-service
+      port:
+        number: 80
   rules:
   - host: voting-app.local
   - http:
@@ -11,6 +24,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: haproxy-service
+            name: voting-app-service
             port:
               number: 80

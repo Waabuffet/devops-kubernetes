@@ -16,7 +16,7 @@ include $path.'/layout/header.php';
         <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
-    <small>Don't have an account yet? <a href="signup.php">Sign Up</a></small>
+    <small>Don't have an account yet? <a href="/signup">Sign Up</a> or <a href="<?php echo "http://" . $_SERVER['SERVER_NAME'] ?>/results">Check voting results</a></small>
 </form>
 
 <?php include $path.'/layout/footer.php'; ?>

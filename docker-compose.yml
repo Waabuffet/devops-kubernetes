@@ -1,21 +1,21 @@
 version: '3.0'
 services:
   app1:
-    build: ./voting-app
+    image: waabuffet/devops-voting-app:haproxy-pretty
     container_name: devops_app
-    ports:
-      - $APP1_PORT:80
     environment:
       - DB_HOST=$DB_HOST
       - DB_PORT=$DB_PORT
       - DB_DATABASE=$DB_DATABASE
       - DB_USER=$DB_USER
       - DB_PASS=$DB_PASS
-      - WORKDIR=$APP_WORKDIR
+    ports:
+      - 80:80
   db:
     image: mysql:latest
     container_name: $DB_HOST
     volumes:
       - $DB_DATA:/var/lib/mysql
+      - $DB_CONF:/etc/mysql/my.cnf
     environment:
       - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD

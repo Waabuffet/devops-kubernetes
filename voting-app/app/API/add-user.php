@@ -6,11 +6,11 @@ include $path.'/API/functions.php';
 
 if(!isset($_POST['username']) || !isset($_POST['password'])){
     $_SESSION["error"] = "Username and password required";
-    header('Location: /pages/signup.php');
+    header('Location: /signup');
 }else{
     if(!isnotempty([$_POST['username'], $_POST['password']])){
         $_SESSION["error"] = "Username and password cannot be empty";
-        header('Location: /pages/signup.php');
+        header('Location: /signup');
     }else{
 
         $query = "SELECT id FROM users WHERE username = :username";
@@ -21,7 +21,7 @@ if(!isset($_POST['username']) || !isset($_POST['password'])){
 
         if($result->rowCount() != 0){
             $_SESSION["error"] = "Username taken";
-            header('Location: /pages/signup.php');
+            header('Location: /signup');
         }else{
             $query = "INSERT INTO users (username, password) VALUES (:username, :password)";
 
@@ -31,7 +31,7 @@ if(!isset($_POST['username']) || !isset($_POST['password'])){
             ));
 
             $_SESSION["user_id"] = $id;
-            header('Location: /pages/vote.php');
+            header('Location: /vote');
         }
         
         

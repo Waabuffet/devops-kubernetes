@@ -5,16 +5,16 @@
     if($_GET['session_check'] == "guest"){ //check if user has session, redirect to vote
         if(isset($_SESSION['user_id'])){
             if($_SESSION['user_id'] != ''){
-                header('Location: /pages/vote.php');
+                header('Location: /vote');
             }
         }
     }else if($_GET['session_check'] == 'auth'){ //check if user has no session, redirect to login
         if(isset($_SESSION['user_id'])){
             if($_SESSION['user_id'] == ''){
-                header('Location: /pages/login.php');
+                header('Location: /login');
             }
         }else{
-            header('Location: /pages/login.php');
+            header('Location: /login');
         }
     }
     if(!isset($isLogin)){
@@ -45,7 +45,7 @@
                 if(!$isLogin){
                     echo '
                         <div>
-                            <a class="btn btn-secondary" href="../API/logout.php">Sign Out</a>
+                            <a class="btn btn-secondary" href="/API/logout.php">Sign Out</a>
                         </div>
                     ';
                 }

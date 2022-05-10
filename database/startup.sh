@@ -1,10 +1,10 @@
 #!/bin/bash
 
-if [ -d /var/lib/mysql/voting_app ] ; then 
-    # deploy database
-fi
+mysqld start
 
-# check if data present in db
-# docker exec -i devops_db mysql -uroot -pqweqwe123 <<< "use voting_app; select * from users;"
+if [ -d /var/lib/mysql/voting_app ] ; then 
+    mysql -uroot -p$MYSQL_ROOT_PASSWORD < /root/db.sql
+    mysql -uroot -p$MYSQL_ROOT_PASSWORD < /root/db-data.sql
+fi
 
 exec "$@"

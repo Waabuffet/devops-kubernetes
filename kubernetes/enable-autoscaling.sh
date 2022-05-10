@@ -8,4 +8,4 @@ kubectl get hpa
 kubectl get hpa voting-app-deployment --watch
 
 # produce some load (run on a seperate terminal)
-kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://voting-app-service; done"
+kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://voting-app.local/API/makework.php; done"

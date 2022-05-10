@@ -16,7 +16,7 @@ include $path.'/API/checkIfVoted.php';
   </div>
   <button type="submit" class="btn btn-primary" <?php echo ($hasVoted)? 'disabled' : ''; ?>>Vote</button>
   <?php if($hasVoted){echo "&nbsp; <small>You have already voted</small> &nbsp;";} ?>
-  <small><a href="results.php">Check voting results</a></small>
+  <small><a href="<?php echo "http://" . $_SERVER['SERVER_NAME'] ?>/results">Check voting results</a></small>
 </form>
 
 <?php include $path.'/layout/footer.php'; ?>

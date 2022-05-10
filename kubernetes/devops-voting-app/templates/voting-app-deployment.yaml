@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "devops-voting-app.fullname" . }}
+  labels:
+    app: {{ include "devops-voting-app.fullname" . }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ include "devops-voting-app.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "devops-voting-app.fullname" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "devops-voting-app.fullname" . }}
+            - secretRef:
+                name: {{ include "devops-voting-app.fullname" . }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /results
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /results
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

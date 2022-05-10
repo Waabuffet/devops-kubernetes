@@ -7,11 +7,11 @@ include $path.'/API/functions.php';
 if(!isset($_POST['username']) || !isset($_POST['password'])){
     // echo returnJSON(200, 'Username and password required');
     $_SESSION["error"] = "Username and password required";
-    header('Location: /pages/login.php');
+    header('Location: /login');
 }else{
     if(!isnotempty([$_POST['username'], $_POST['password']])){
         $_SESSION["error"] = "Username and password cannot be empty";
-        header('Location: /pages/login.php');
+        header('Location: /login');
     }else{
         
         $query = "SELECT id, password FROM users WHERE username = :username;";
@@ -27,10 +27,10 @@ if(!isset($_POST['username']) || !isset($_POST['password'])){
             $row = $result->fetch();
             if(!password_verify($_POST['password'], $row['password'])){
                 $_SESSION["error"] = "Wrong password";
-                header('Location: /pages/login.php');
+                header('Location: /login');
             }else{
                 $_SESSION["user_id"] = $row['id'];
-                header('Location: /pages/vote.php');
+                header('Location: /vote');
             }
         }
 

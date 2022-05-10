@@ -1,0 +1,90 @@
+# Default values for devops-voting-app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: waabuffet/devops-voting-app
+  tag: haproxy-pretty
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: "voting-app"
+fullnameOverride: "voting-app"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP #LoadBalancer
+  port: 80
+
+database:
+  port: 3306
+  image: mysql
+  imageTag: latest
+  name: db
+  volume:
+    name: db-volume
+    mountPath: /var/lib/mysql
+    hostPath: /dbdata
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations: 
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/session-cookie-name: "voting-app-cookie"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: voting-app.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+resources:
+  limits:
+    cpu: 50m
+  requests:
+    cpu: 50m
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+configMaps:
+  all:
+    DB_HOST : db
+    DB_PORT : "3306"
+    DB_DATABASE : voting_app
+    DB_USER : devops
+    DB_DATA : ./database/data
+
+secrets:
+  all:
+    DB_PASS : bGFsYXF3ZQ==
+    MYSQL_ROOT_PASSWORD : cXdlcXdlMTIz
