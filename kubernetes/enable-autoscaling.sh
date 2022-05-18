@@ -1,3 +1,5 @@
+# DO NOT RUN THIS SCRIPT
+
 kubectl autoscale deployment voting-app-deployment --cpu-percent=50 --min=1 --max=10
 
 

@@ -8,3 +8,6 @@ if [ -d /var/lib/mysql/voting_app ] ; then
 fi
 
 exec "$@"
+
+
+#! not implemented
